@@ -44,20 +44,19 @@ impl FromStr for Person {
         }
 
         let split_s: Vec<&str> = s.split(',').collect();
-
-        if split_s.len() != 2 {
-            return Err(ParsePersonError::BadLen);
-        }
-
-        let name = split_s[0].to_string();
-
-        if name.is_empty() {
-            return Err(ParsePersonError::NoName);
-        }
-
-        match split_s[1].parse::<usize>() {
-            Ok(age) => Ok(Person { name, age }),
-            Err(e) => Err(ParsePersonError::ParseInt(e)),
+        match &split_s[..] {
+            [name, age] => {
+                if name.is_empty() {
+                    return Err(ParsePersonError::NoName);
+                }
+                Ok(Person {
+                    name: name.to_string(),
+                    age: age
+                        .parse::<usize>()
+                        .map_err(|e| ParsePersonError::ParseInt(e))?,
+                })
+            }
+            _ => Err(ParsePersonError::BadLen),
         }
     }
 }

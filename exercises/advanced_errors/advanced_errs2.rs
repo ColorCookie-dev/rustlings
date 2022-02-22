@@ -88,8 +88,6 @@ struct Climate {
 // 6. Return an `Ok` value containing the completed `Climate` value.
 impl FromStr for Climate {
     type Err = ParseClimateError;
-    // TODO: Complete this function by making it handle the missing error
-    // cases.
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if s.is_empty() {
             return Err(ParseClimateError::Empty);
